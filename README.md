@@ -3,7 +3,7 @@ Code and data for "Enhancing Trait Measurement in Forage Sorghum Using Unoccupie
 
 ## License & Citation
 ### Code
-The R scripts in this repository are licensed under the MIT License (`LICENSE_CODE`).  
+The R script in this repository (`Forage_Code.r`) is licensed under the MIT License (`LICENSE_CODE`).  
 Please cite our work if you use the code:
 
 Crozier, K. A. & Rooney, W. L. (2025). *Enhancing Trait Measurement in Forage Sorghum Using Unoccupied Aerial Systems*. Manuscript in preparation.  
