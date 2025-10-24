@@ -1,33 +1,24 @@
 # Packages
-library(dplyr)      
-library(readxl)  
-library(sp)
-library(raster)
-library(rgdal)        
-library(FIELDimageR)  
-library(caret)        
-library(randomForest) 
-library(gbm)          
-library(rpart)      
-library(brnn)         
-library(e1071)        
-library(xgboost)      
-library(glmnet)     
-
-# Load all required packages
-library(readxl)
-library(dplyr)
+library(brnn)
 library(caret)
-library(randomForest)
-library(e1071)
-library(xgboost)
-library(elasticnet)
-library(glmnet)
-library(ggplot2)
-library(lattice)
-library(foreach)
+library(dplyr)
 library(doParallel)
+library(e1071)
+library(elasticnet)
+library(FIELDimageR)
+library(foreach)
+library(gbm)
+library(ggplot2)
+library(glmnet)
+library(lattice)
+library(randomForest)
+library(raster)
+library(readxl)
+library(rgdal)
+library(rpart)
+library(sp)
 library(tibble)
+library(xgboost)
 
 #################################################################################################### 
 ######################################### Data Extraction ########################################## 
@@ -76,7 +67,7 @@ write.csv(data1,"Indices.csv")
 ####################################################################################################
 ################## Create Data Files ###################
 setwd("C:/Desktop")
-data1 <- read_excel("/ForageData.xlsx", sheet= "DTA")
+data1 <- read_excel("ForageData.xlsx", sheet= "DTA")
 data1$Actual_DTA <- as.numeric(data1$Actual_DTA)
 data1$TestName1 <- as.character(data1$TestName1)
 train <- filter(data1, TestName1 %in% c("D", "F", "G", "I")) # data used to train and test the models
@@ -114,7 +105,7 @@ for (response_var in response_variables) {
     saveRDS(model, paste("best_", method, "_model_", response_var, ".rds", sep = ""))
   }
 }
-write.csv(results_df, "Train22_model_resamples.csv", row.names = FALSE) # Save all the resample results
+write.csv(results_df, "Train_Results_DTA.csv", row.names = FALSE) # Save all the resample results
 
 ################## Apply Model ###################
 validate1 <- validate # data frame that includes validation data 
@@ -173,14 +164,14 @@ for (current_test in unique(validate1$TestName1)) {
   test_results_df$TestName <- current_test
   overall_test_results_df <- rbind(overall_test_results_df, test_results_df)
 }
-write.csv(overall_test_results_df, "overall_test_results.csv", row.names = FALSE)
+write.csv(overall_test_results_df, "Validation_Results_DTA.csv", row.names = FALSE)
 
 #################################################################################################### 
 ########################################## Biomass Yield ########################################### 
 ####################################################################################################
 ################## Create Data Files ################## 
 setwd("C:/Desktop")
-data1 <- read_excel("/Users/kayla/Desktop/ForageData.xlsx", sheet= "Biomass")
+data1 <- read_excel("ForageData.xlsx", sheet= "Biomass")
 data1$Actual_Biomass <- as.numeric(data1$Actual_Biomass)
 data1$TestName1 <- as.character(data1$TestName1)
 train <- filter(data1, TestName1 %in% c("D", "F", "J","C", "L")) # data used to train and test the models
@@ -222,7 +213,7 @@ for (response_var in response_variables) {
     })
   }
 }
-write.csv(results_df, "Train_Results.csv", row.names = FALSE)
+write.csv(results_df, "Train_Results_Biomass.csv", row.names = FALSE)
 
 
 ################################# Validate Models ################################# 
@@ -275,5 +266,5 @@ for (trial_name in unique_trial_names) {
   test_results_df$TrialName1 <- trial_name  
   overall_test_results_df <- rbind(overall_test_results_df, test_results_df)
 }
-write.csv(overall_test_results_df, "Validation_results.csv", row.names = FALSE) #save final predictions
+write.csv(overall_test_results_df, "Validation_Results_Biomass.csv", row.names = FALSE) #save final predictions
 
